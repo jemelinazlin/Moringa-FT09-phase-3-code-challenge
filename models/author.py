@@ -15,10 +15,21 @@ class Author:
         if id is None:
             self._save_to_db()
 
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS author (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL
+        );
+    ''')
+    conn.commit()
+    conn.close()
+
     def _save_to_db(self):
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO authors (name) VALUES (?)', (self._name,))
+        cursor.execute('INSERT INTO author (name) VALUES (?)', (self._name,))
         conn.commit()
         self._id = cursor.lastrowid
         conn.close()

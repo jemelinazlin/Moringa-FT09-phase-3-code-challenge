@@ -59,6 +59,18 @@ def main():
         for article in articles:
             print(Article(article["id"], article["title"], article["content"], article["author_id"], article["magazine_id"]))
 
+        # Test Magazine class
+        print("\nTesting Magazine Class:")
+        magazine_instance = Magazine()
+        magazine_instance.name = "Science Today"
+        magazine_instance.category = "Science"
+        magazine_instance.save()
+        print(f"Magazine ID: {magazine_instance.id}")
+        print(f"Magazine Name: {magazine_instance.name}")
+        print(f"Magazine Category: {magazine_instance.category}")
+        print("Article Titles:", magazine_instance.article_titles())
+        print("Contributing Authors:", magazine_instance.contributing_authors())
+
     except Exception as e:
         print(f"An error occurred: {e}")
 

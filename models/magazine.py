@@ -91,6 +91,37 @@ class Magazine:
         contributors = cursor.fetchall()
         conn.close()
         return contributors
+    
+    def article_titles(self):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT title
+            FROM articles
+            WHERE magazine_id =?
+        ''', (self._id,))
+        titles = cursor.fetchall()
+        conn.close()
+        if titles:
+            return [title[0] for title in titles]
+        return None
+
+    def contributing_authors(self):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT authors.name
+            FROM authors
+            INNER JOIN articles ON authors.id = articles.author_id
+            WHERE articles.magazine_id =?
+            GROUP BY authors.name
+            HAVING COUNT(articles.id) > 2
+        ''', (self._id,))
+        authors = cursor.fetchall()
+        conn.close()
+        if authors:
+            return [Author(author[0]) for author in authors]
+        return None
 
     def __repr__(self):
         return f'<Magazine {self.name}>'
