@@ -5,7 +5,14 @@ from models.magazine import Magazine
 
 class TestModels(unittest.TestCase):
     def test_author_creation(self):
-        author = Author(1, "John Doe")
+        author = Author(1, "John Doe", None)
+        author = Author("John Doe")
+        self.assertIsNotNone(author.id)
+        self.assertEqual(author.name, "John Doe")
+
+    def test_author_creation_with_id(self):
+        author = Author("John Doe", 1)
+        self.assertEqual(author.id, 1)
         self.assertEqual(author.name, "John Doe")
 
     def test_article_creation(self):
